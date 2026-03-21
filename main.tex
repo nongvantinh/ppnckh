@@ -1,0 +1,513 @@
+% Bài nghiên cứu: máy học dự đoán bệnh tiểu đường (cấu trúc IMRaD)
+% Biên dịch: XeLaTeX hoặc LuaLaTeX (hỗ trợ tiếng Việt Unicode)
+
+\documentclass[14pt,a4paper]{extarticle}
+
+% Gói tiếng Việt (Unicode)
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setmainfont{Times New Roman}
+
+% Layout và hình thức
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{indentfirst}
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\usepackage{tocloft}
+\setlength{\cftsecnumwidth}{5.2em}
+\setlength{\cftsubsecnumwidth}{2.8em}
+\setlength{\cftsubsubsecnumwidth}{4em}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+
+% Trích dẫn và tài liệu tham khảo
+\usepackage{csquotes}
+\DeclareQuoteStyle{vietnamese}
+  {\guillemotleft}{\guillemotright}
+  {\textquotedblleft}{\textquotedblright}
+\usepackage[backend=biber,style=ieee,sorting=none,bibencoding=utf8,giveninits=false]{biblatex}
+\addbibresource{references.bib}
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}\addperiod}
+\ExecuteBibliographyOptions{giveninits=false}
+\setlength{\emergencystretch}{5em}
+\AtBeginBibliography{\sloppy}
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\addcomma\space}%
+  \printfield{year}%
+  \setunit{\addcomma\space}%
+  \printfield{title}%
+  \setunit{\addcomma\space}%
+  \printlist{publisher}%
+  \iflistundef{location}{}{\setunit{\addcomma\space}\printlist{location}}%
+  \usebibmacro{finentry}%
+}
+
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\addcomma\space}%
+  \printfield{year}%
+  \setunit{\addcomma\space}%
+  \printfield{title}%
+  \setunit{\addcomma\space}%
+  \printfield{booktitle}%
+  \setunit{\addcomma\space}%
+  \printlist{publisher}%
+  \usebibmacro{finentry}%
+}
+
+\DeclareBibliographyDriver{periodical}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printfield{title}%
+  \setunit{\addcomma\space}%
+  \printlist{publisher}%
+  \iflistundef{location}{}{\setunit{\addcomma\space}\printlist{location}}%
+  \usebibmacro{finentry}%
+}
+
+\usepackage[unicode,colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,
+  bookmarks=true,bookmarksopen=true,bookmarksnumbered=true,bookmarksdepth=3,
+  pdfencoding=unicode]{hyperref}
+\usepackage[open,numbered,depth=3]{bookmark}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Thông tin bìa (có thể sửa trực tiếp tại đây)
+\newcommand{\hocphan}{Khoa học máy tính / Nghiên cứu khoa học}
+\newcommand{\tenduan}{Nghiên cứu và đánh giá hiệu quả của các thuật toán máy học trong việc dự đoán bệnh tiểu đường}
+\newcommand{\giangvien}{TS. Phạm Quốc Hương}
+\newcommand{\hocvien}{Nông Văn Tình}
+\newcommand{\mahocvien}{8480101250028}
+\newcommand{\lop}{Khoa học máy tính}
+\newcommand{\malop}{25MCS2}
+\newcommand{\nganh}{Khoa học máy tính}
+\newcommand{\manganh}{8480101}
+\newcommand{\thangnam}{.... / .....}
+\newcommand{\noidungnghiencuu}{\tenduan}
+
+\begin{document}
+
+%==============================================================================
+% BÌA 1 (trang 1 - theo mẫu BIA DO AN CUOI MON MCS.docx)
+%==============================================================================
+\thispagestyle{empty}
+\begin{center}
+\vspace*{0.3cm}
+{\fontsize{14}{18}\selectfont\bfseries BỘ GIÁO DỤC VÀ ĐÀO TẠO}\\[0.5cm]
+{\fontsize{14}{18}\selectfont\bfseries TRƯỜNG ĐẠI HỌC TƯ THỤC QUỐC TẾ SÀI GÒN}\\[0.5cm]
+\includegraphics[height=1.8cm]{image/logo.png}\\[0.3cm]
+
+\vspace{0.8cm}
+{\fontsize{18}{22}\selectfont\bfseries BÀI ĐỒ ÁN CUỐI KỲ}\\[1.2cm]
+
+{\fontsize{14}{18}\selectfont\bfseries HỌC PHẦN:\quad \hocphan}\\[1cm]
+
+{\fontsize{14}{18}\selectfont\bfseries TÊN ĐỒ ÁN:}\\[0.3cm]
+{\fontsize{14}{18}\selectfont\bfseries \tenduan}\\[1.5cm]
+
+\begin{minipage}[t]{0.85\textwidth}
+\fontsize{13}{17}\selectfont
+\bfseries Giảng viên giảng dạy:\quad \giangvien\\[0.4cm]
+\bfseries Học viên thực hiện:\quad \hocvien\\[0.4cm]
+\bfseries Mã học viên:\quad \mahocvien\\[0.4cm]
+\bfseries Lớp:\quad \lop \hspace{2cm} \bfseries Mã số lớp:\quad \malop\\[1.2cm]
+\end{minipage}
+
+\vfill
+{\fontsize{13}{17}\selectfont\itshape TP. Hồ Chí Minh, tháng \thangnam}\\[0.6cm]
+\end{center}
+
+%==============================================================================
+% BÌA 2 (trang 2 - theo mẫu BIA DO AN CUOI MON MCS.docx)
+%==============================================================================
+\newpage
+\thispagestyle{empty}
+{\setlength{\fboxrule}{4.5pt}\setlength{\fboxsep}{12pt}%
+\noindent\fbox{\begin{minipage}{\dimexpr\textwidth-2\fboxsep-2\fboxrule}
+\begin{center}
+\vspace*{0.3cm}
+{\fontsize{14}{18}\selectfont\bfseries BỘ GIÁO DỤC VÀ ĐÀO TẠO}\\[0.5cm]
+{\fontsize{14}{18}\selectfont\bfseries TRƯỜNG ĐẠI HỌC TƯ THỤC QUỐC TẾ SÀI GÒN}\\[0.8cm]
+{\fontsize{14}{18}\selectfont\bfseries *********}\\[1cm]
+
+\includegraphics[width=11cm]{image/full-name-and-logo.png}\\[0.7cm]
+
+{\fontsize{18}{22}\selectfont\bfseries BÀI CUỐI KỲ}\\[1.2cm]
+
+\begin{tabular}{l l}
+{\fontsize{14}{18}\selectfont\bfseries Ngành:} & \nganh \\[0.3cm]
+{\fontsize{14}{18}\selectfont\bfseries Mã ngành:} & \manganh \\[0.3cm]
+{\fontsize{14}{18}\selectfont\bfseries Mã lớp:} & \malop \\[0.3cm]
+\end{tabular}
+
+\end{center}
+\begin{flushleft}
+{\fontsize{14}{18}\selectfont\bfseries \uline{Nội dung nghiên cứu:}}\\[0.3cm]
+\hspace{1cm}\noidungnghiencuu
+\end{flushleft}
+\vspace{1.2cm}
+
+\begin{center}
+\vfill
+{\fontsize{13}{17}\selectfont\itshape TP. Hồ Chí Minh, tháng \thangnam}\\[0.8cm]
+\end{center}
+
+\end{minipage}}}
+
+\begin{center}
+  % Bảng chấm điểm
+\begin{tabular}{|p{2.5cm}|p{3cm}|p{5cm}|p{3.5cm}|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Điểm}} 
+& \multicolumn{1}{c|}{\textbf{Nhận xét}} 
+& \multicolumn{1}{c|}{\textbf{Giảng viên ký}} \\
+\cline{1-2}
+\textbf{Bằng số} & \textbf{Bằng chữ} & & \\
+\hline
+&  &  &  \\[2.5cm]
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+%==============================================================================
+\section*{Tóm tắt (Abstract)}
+\addcontentsline{toc}{section}{\numberline{}Tóm tắt (Abstract)}
+%==============================================================================
+
+\begin{quote}
+\itshape
+\noindent
+\textbf{(Không trích dẫn; khoảng 150--250 từ.)} Bệnh tiểu đường và các biến chứng liên quan là gánh nặng sức khỏe toàn cầu; phát hiện sớm giúp can thiệp kịp thời. Nghiên cứu này so sánh hồi quy logistic, SVM, rừng ngẫu nhiên và KNN trong phân loại nhị phân trên tập Pima Indians Diabetes, với giao thức tiền xử lý và đánh giá tách bạch chọn mô hình so với ước lượng hiệu năng, nhằm giảm rò rỉ dữ liệu và tăng tính tái lập. Các chỉ số gồm Accuracy, Precision, Recall, F1 và ROC--AUC; kèm phân tích giải thích mô hình (tầm quan trọng đặc trưng hoặc SHAP nếu có). \textbf{Sau thí nghiệm, cần chèn số liệu định lượng cụ thể} --- ví dụ mô hình dẫn đầu theo AUC hoặc F1 và giá trị kèm độ không chắc chắn (trung bình $\pm$ độ lệch chuẩn trên fold/seed, hoặc khoảng tin cậy 95\%) --- để tóm tắt phản ánh đúng đóng góp thực nghiệm, tránh chỉ mô tả khung phương pháp. Tuy vậy, kết quả chịu giới hạn bởi quy mô và tính đồng nhất quần thể của Pima, cũng như thiếu kiểm định trên tập dữ liệu ngoài độc lập (external validation); do đó kết luận mang tính phương pháp và minh họa quy trình, chưa thể khái quát trực tiếp sang lâm sàng lâu dài.
+\end{quote}
+
+\noindent\textbf{Từ khóa (Keywords):} machine learning; diabetes prediction; binary classification; healthcare data; support vector machine; random forest; reproducibility.
+
+\section{Giới thiệu}
+
+\subsection{Bối cảnh và động lực}
+
+Bệnh tiểu đường mellitus là nhóm bệnh chuyển hóa phổ biến, gia tăng nhanh cùng lối sống và già hóa dân số. Phát hiện sớm giúp giảm biến chứng và chi phí điều trị. Các công cụ hỗ trợ dựa trên dữ liệu lâm sàng và sinh hiệu có thể bổ trợ sàng lọc, \emph{không thay thế} chẩn đoán bởi bác sĩ.
+
+\subsection{Phát biểu vấn đề và mục tiêu}
+
+Cần một hệ thống có thể học từ dữ liệu bệnh nhân để dự đoán nhãn có/không tiểu đường (phân loại nhị phân). Mục tiêu tổng quát: (i) xây dựng và huấn luyện các mô hình máy học; (ii) đánh giá và so sánh theo chỉ số chuẩn; (iii) phân tích đặc trưng có đóng góp lớn.
+
+\subsection{Câu hỏi nghiên cứu}
+
+Để gắn mục tiêu với thiết kế thực nghiệm có thể kiểm chứng, bài báo làm việc với các câu hỏi sau:
+
+\begin{itemize}
+  \item \textbf{RQ1:} Trong tập dữ liệu và quy trình tiền xử lý được mô tả, thuật toán phân loại cổ điển nào đạt hiệu năng tốt nhất theo Accuracy, F1 và ROC--AUC?
+  \item \textbf{RQ2:} Những đặc trưng lâm sàng nào có đóng góp lớn nhất vào quyết định của mô hình (và liệu thứ tự đó có phù hợp với kiến thức lâm sàng)?
+\end{itemize}
+
+\subsection{Đóng góp của bài báo}
+
+Các đóng góp chính được tóm tắt như sau (theo phong cách báo cáo quốc tế):
+
+\begin{itemize}
+  \item So sánh có hệ thống nhiều bộ phân loại (hồi quy logistic, SVM, rừng ngẫu nhiên, KNN) trên cùng một pipeline huấn luyện/đánh giá, kèm mô tả tái lập (hạt giống ngẫu nhiên, chia tập, xác thực chéo).
+  \item Báo cáo đầy đủ các chỉ số phân loại nhị phân (Accuracy, Precision, Recall, F1, ROC--AUC) và khuyến nghị báo cáo độ ổn định qua trung bình $\pm$ độ lệch chuẩn khi lặp lại thực nghiệm.
+  \item Phân tích giải thích kết quả thông qua tầm quan trọng đặc trưng (hoặc hệ số/hệ số chuẩn hóa tùy mô hình), đồng thời bổ sung thảo luận về phân tích lỗi (false positive/false negative) và giới hạn dữ liệu.
+\end{itemize}
+
+\subsection{Định nghĩa bài toán (problem formulation)}
+
+Cho tập gồm $n$ mẫu quan sát. Mỗi mẫu được biểu diễn bởi vector đặc trưng $\mathbf{x} \in \mathbb{R}^d$ (các biến lâm sàng sau mã hóa và tiền xử lý hợp lệ) và nhãn nhị phân $y \in \{0,1\}$ (ví dụ $y=1$: có/khởi phát tiểu đường; $y=0$: không). Bài toán là \emph{phân loại nhị phân}: ước lượng hàm $f:\mathbb{R}^d \to \{0,1\}$ hoặc ước lượng xác suất $\hat{P}(y=1 \mid \mathbf{x})$ rồi áp ngưỡng, sao cho sai số tổng quát hóa trên phân phối dữ liệu mới là nhỏ theo các chỉ số đã chọn. Các thuật toán trong bài (logistic regression, SVM, random forest, KNN) là các họ khác nhau của mô hình cho cùng bài toán này.
+
+\section{Tổng quan nghiên cứu}
+
+\subsection{Bối cảnh trích dẫn}
+
+Tập Pima Indians Diabetes là điểm xuất phát kinh điển cho các thử nghiệm học máy y tế: bài gốc dùng thuật toán ADAP để dự báo khởi phát bệnh trên cùng kiểu đặc trưng lâm sàng.\cite{smith1988,uci-pima} Về sau, nhiều công trình so sánh các bộ phân loại cổ điển (Na\"ive Bayes, cây quyết định, SVM, rừng ngẫu nhiên, kNN, v.v.) trên cùng kho dữ liệu mở.\cite{sisodia2018,chang2022pima,miao2021pima}
+
+\subsection{Phân tích và so sánh có định lượng}
+
+Khác với chỉ ``liệt kê'' thuật toán, các nghiên cứu gần đây thường báo cáo bộ chỉ số đầy đủ hơn và/hoặc công cụ giải thích mô hình. Ví dụ, Chang et al.\ so sánh nhiều phương pháp học máy trên Pima và nhấn mạnh vai trò của tiền xử lý cũng như độ nhạy với lựa chọn mô hình.\cite{chang2022pima} Miao trình bày pipeline dự đoán dựa trên các thuật toán sklearn-style trên cùng tập PIMA trong bối cảnh hội nghị.\cite{miao2021pima} Kırbaş và Çifci đánh giá tám mô hình kèm SMOTE và giải thích SHAP; tác giả báo cáo rừng ngẫu nhiên đạt khoảng 82--83\% accuracy và F1 $\approx 0{,}83$--$0{,}84$ tùy giao thức train/test hay 10-fold.\cite{kirbas2025shap} Zhang so sánh hồi quy logistic, RF, SVM và XGBoost, ghi nhận XGBoost đạt accuracy $\approx 85\%$ và ROC--AUC $\approx 0{,}91$ trong thiết lập của tác giả.\cite{zhang2025pima}
+
+Điểm then chốt là: \emph{cùng một tập Pima} vẫn có thể cho kết quả khác nhau đáng kể nếu khác nhau về cân bằng lớp, chuẩn hóa, tách tập, và siêu tham số. Vì vậy, bài viết này không chỉ nêu ``mô hình tốt nhất'' mà cố gắng mô tả rõ giao thức tái lập (Mục~\ref{sec:methods}) và tách phần kết quả thuần với phần diễn giải (Mục~\ref{sec:results}--\ref{sec:discussion}).\cite{pedregosa2011}
+
+\begin{table}[htbp]
+  \centering
+  \caption{Ví dụ tóm tắt số liệu đã công bố trong vài công trình gần đây trên Pima (chỉ mang tính minh họa so sánh văn bản; điều kiện thực nghiệm khác nhau).}
+  \label{tab:related-numbers}
+  \begin{tabular}{llp{5.8cm}}
+    \toprule
+    Nguồn & Thuật toán nổi bật & Ghi chép ngắn (theo bài gốc) \\
+    \midrule
+    \cite{smith1988} & ADAP / nền tảng sớm & Baseline lịch sử trên cùng kiểu đặc trưng. \\
+    \cite{sisodia2018} & Nhiều bộ phân loại & So sánh thuật toán cổ điển trên dữ liệu chẩn đoán. \\
+    \cite{chang2022pima} & Nhiều mô hình ML & Phân tích rộng trên Pima với nhiều phương pháp. \\
+    \cite{kirbas2025shap} & RF, XGBoost, v.v. & RF $\approx 82$--$83\%$ acc; giải thích SHAP. \\
+    \cite{zhang2025pima} & XGBoost, RF, SVM, LR & XGBoost $\approx 85\%$ acc; AUC $\approx 0{,}91$. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Định vị phản biện (critical positioning)}
+
+Tuy nhiên, nhiều công trình trên Pima (và các báo cáo ngắn tương tự) vẫn \textbf{khó so sánh công bằng} vì: (i) không công bố đầy đủ seed, phiên bản thư viện và phương sai (variance) của chỉ số qua nhiều lần chạy; (ii) không phân tách rõ \emph{giai đoạn chọn mô hình/siêu tham số} với \emph{giai đoạn đánh giá cuối} --- dễ dẫn tới ước lượng lạc quan nếu cùng một tập kiểm thử được ``nhìn'' nhiều lần; (iii) ít khi mô tả rõ chuẩn hóa/điền thiếu được fit trên tập nào, từ đó khó loại trừ \emph{data leakage}. Bài viết này cố ý bổ sung các mục tương ứng (Mục~\ref{sec:methods}--\ref{sec:results}, cùng thảo luận validity) để giảm các lỗ hổng thường gặp khi phản biện.\cite{pedregosa2011}
+
+\subsection{Khoảng trống nghiên cứu}
+
+Nhiều báo cáo ngắn hoặc bài tập lớn chỉ trích một chỉ số đơn lẻ, thiếu độ ổn định thống kê (lặp seed / lặp fold), hoặc thiếu phân tích lỗi và tác động lâm sàng. Khoảng trống này được xử lý trong bài viết bằng: (i) mô tả reproducibility rõ ràng; (ii) khuyến nghị báo cáo trung bình $\pm$ độ lệch chuẩn; (iii) thảo luận false positive/false negative và thiên lệch dữ liệu.
+
+\section{Dữ liệu và phương pháp}
+\label{sec:methods}
+
+\subsection{Khung tổng thể và pipeline}
+
+Hình~\ref{fig:pipeline} tóm tắt luồng nghiên cứu theo hướng có thể tái lập: từ dữ liệu thô đến tiền xử lý, (tùy chọn) lựa chọn/giảm chiều đặc trưng, huấn luyện mô hình và đánh giá ngoài mẫu hoặc qua xác thực chéo.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{%
+  \begin{tikzpicture}[
+    node distance=5mm and 8mm,
+    box/.style={rectangle, draw, rounded corners=2pt, minimum height=9mm, minimum width=22mm, align=center, font=\small},
+    arr/.style={-{Stealth[length=2.2mm]}, thick}
+  ]
+    \node[box] (data) {Dữ liệu\\thô};
+    \node[box, right=of data] (pre) {Tiền xử lý};
+    \node[box, right=of pre] (fs) {Đặc trưng /\\lựa chọn};
+    \node[box, right=of fs] (m) {Huấn luyện\\mô hình};
+    \node[box, right=of m] (e) {Đánh giá};
+    \draw[arr] (data) -- (pre);
+    \draw[arr] (pre) -- (fs);
+    \draw[arr] (fs) -- (m);
+    \draw[arr] (m) -- (e);
+  \end{tikzpicture}%
+  }
+  \caption{Pipeline nghiên cứu: từ dữ liệu đến đánh giá (có thể lặp lại với các seed và fold khác nhau để ước lượng độ ổn định).}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Mô tả dữ liệu}
+
+Nguồn: tập dữ liệu công khai phục vụ nghiên cứu, ví dụ Pima Indians Diabetes trên UCI Repository.\cite{uci-pima,smith1988} Các thuộc tính điển hình gồm số lần mang thai, nồng độ đường huyết, huyết áp, độ dày da gấp, insulin huyết thanh, BMI, hệ số di truyền, tuổi; nhãn là biến nhị phân (có/không tiểu đường). \textbf{[Bổ sung thống kê mô tả: trung bình, độ lệch chuẩn, tỷ lệ lớp.]}
+
+Tập Pima thường có \textbf{mất cân bằng lớp nhẹ đến vừa} (tỷ lệ lớp dương tính thường thấp hơn lớp âm tính). Bài báo cần \textbf{khai báo rõ ràng} chiến lược xử lý: (i) \textbf{không can thiệp} ngoài \emph{stratify} khi chia tập và báo cáo Precision/Recall/F1 có trọng số; hoặc (ii) \texttt{class\_weight='balanced'} (hoặc trọng số tùy chỉnh) trên các mô hình hỗ trợ; hoặc (iii) \textbf{lấy mẫu lại} (SMOTE, undersampling, v.v.) --- \emph{chỉ áp dụng trên tập huấn luyện hoặc train fold}, ghi rõ trong Phụ lục~\ref{app:hyper}. Không được dùng SMOTE trên toàn bộ dữ liệu trước khi chia tập.
+
+\subsection{Tiền xử lý dữ liệu}
+
+\textbf{Chống rò rỉ dữ liệu (tránh data leakage):} các bước ước lượng tham số từ dữ liệu --- ví dụ thống kê để điền thiếu, tham số của \texttt{StandardScaler}/\texttt{MinMaxScaler}, ma trận PCA, ngưỡng biến đổi --- chỉ được \texttt{fit} trên \emph{tập huấn luyện} (hoặc trên phần huấn luyện của từng fold), sau đó \texttt{transform} áp dụng lên tập kiểm thử hoặc phần kiểm định. \textbf{Không} tính trung bình/phương sai (hay thống kê imputation) trên toàn bộ dataset rồi mới chia train/test.
+
+Thứ tự khuyến nghị: (1) tách tập (hoặc xác định fold) có \emph{stratify} theo nhãn nếu dùng hold-out; (2) trên tập huấn luyện (hoặc train fold), thực hiện điền thiếu và/hoặc co giãn/chuẩn hóa; (3) huấn luyện mô hình; (4) đánh giá trên tập giữ lại mà mô hình chưa được tối ưu trực tiếp.
+
+\subsection{Lựa chọn đặc trưng}
+
+Nêu phương pháp: tương quan với nhãn, kiểm định thống kê, hoặc giảm chiều (PCA) tùy thiết kế. Nếu dùng xác thực chéo, mọi bước chọn đặc trưng phải được thực hiện \textbf{chỉ trong} phạm vi dữ liệu huấn luyện của fold đó (tránh ``nhìn'' nhãn của fold kiểm định). \textbf{[Mô tả cụ thể theo notebook hoặc mã nguồn trong thư mục \texttt{resources/}.]}
+
+\subsection{Các mô hình máy học và đường cơ sở (baseline)}
+
+\textbf{Đường cơ sở chính:} hồi quy logistic --- mô hình tuyến tính trên không gian đặc trưng (sau co giãn nếu cần), dễ hiểu và thường được dùng làm baseline trong y sinh học máy. \textbf{Đường cơ sở bổ sung (tùy chọn):} dự đoán lớp đa số (majority class) hoặc mô hình ngẫu nhiên để làm mốc tối thiểu.
+
+Các mô hình so sánh: SVM (kernel RBF hoặc tuyến tính), rừng ngẫu nhiên, KNN. Triển khai thống nhất bằng scikit-learn.\cite{pedregosa2011} \textbf{Siêu tham số} phải khớp Phụ lục~\ref{app:hyper} và mã trong \texttt{resources/}.
+
+\subsection{Chỉ số đánh giá và cơ sở lựa chọn}
+\label{subsec:metrics}
+
+Báo cáo Accuracy, Precision, Recall, F1 (macro hoặc weighted tùy mất cân bằng lớp) và ROC--AUC. Trong bối cảnh \textbf{sàng lọc / hỗ trợ phát hiện sớm}, bỏ sót ca dương tính (false negative) thường có hậu quả lâm sàng nặng hơn báo động giả (false positive) ở nhiều kịch bản; vì vậy ngoài Accuracy cần nhấn mạnh \textbf{Recall} (độ nhạy) và ROC--AUC, đồng thời thảo luận đánh đổi Precision--Recall khi điều chỉnh ngưỡng. Đây là \emph{lý do miền ứng dụng} (domain justification) cho bộ chỉ số, không chỉ liệt kê công thức.
+
+\subsection{Lựa chọn mô hình so với đánh giá (selection vs evaluation)}
+\label{subsec:selection}
+
+Cần phân biệt rõ hai mục đích: (i) \textbf{chọn mô hình / tinh chỉnh siêu tham số} (model selection); (ii) \textbf{ước lượng hiệu năng tổng quát hóa} (model evaluation).
+
+\begin{itemize}
+  \item \textbf{Thiết lập khuyến nghị:} dùng \emph{vòng trong} (inner loop), ví dụ xác thực chéo trên tập huấn luyện, chỉ để chọn siêu tham số hoặc kiểu mô hình; sau đó huấn luyện lại với cấu hình đã chọn và đo trên \emph{tập kiểm thử giữ độc lập} (hold-out) hoặc dùng \emph{vòng ngoài} (nested cross-validation) nếu không có tập test riêng.
+  \item \textbf{Tránh lỗi phổ biến:} không dùng lặp lại cùng một tập kiểm thử để vừa tinh chỉnh vừa báo cáo kết quả cuối (gây lạc quan giả). Nếu chỉ báo cáo $k$-fold trung bình mà không có test ngoài, cần nói rõ: chỉ số đó phản ánh ước lượng CV chứ không phải hiệu năng trên một test set ``chưa từng dùng cho quyết định''.
+\end{itemize}
+
+\subsection{Giải thích mô hình (interpretability)}
+
+Ngoài chỉ số tổng hợp, báo cáo nên trình bày \textbf{tầm quan trọng đặc trưng}: hệ số chuẩn hóa (logistic regression), \texttt{feature\_importances\_} (random forest), hoặc phương pháp giải thích bổ trợ như SHAP/LIME nếu triển khai.\cite{kirbas2025shap} Mục tiêu là liên hệ với RQ2 và kiến thức lâm sàng, không chỉ nêu xếp hạng thuần túy.
+
+\textbf{Giới hạn của giải thích:} thứ hạng đặc trưng và giá trị SHAP phụ thuộc mô hình, tương quan giữa biến, và phân phối dữ liệu; chúng không tương đương \emph{quan hệ nhân quả} lâm sàng. Giải thích dựa trên cây (RF) có thể thiên lệch khi đặc trưng có tương quan mạnh; SHAP cũng phụ thuộc giả định về hội tụ mẫu và có thể dao động giữa các lần chạy nếu có thành phần ngẫu nhiên. Nên trình bày như bằng chứng hỗ trợ, không thay thế thử nghiệm lâm sàng.
+
+\subsection{Hiệu chuẩn xác suất, ngưỡng quyết định và kiểm định ngoài (tùy chọn nâng cao)}
+\label{subsec:calibration}
+
+Để gần chuẩn \emph{medical ML} hơn (chất lượng xác suất dự đoán, không chỉ nhãn cứng), có thể bổ sung: (i) \textbf{đường cong hiệu chuẩn} (calibration curve) và \textbf{điểm Brier} cho xác suất dương tính; (ii) \textbf{phân tích ngưỡng}: quét ngưỡng trên đường Precision--Recall hoặc dùng \emph{decision curve analysis} (DCA) khi có ước lượng lợi ích/tổn thất; (iii) \textbf{kiểm định ngoài} trên tập dữ liệu độc lập (khác Pima) nếu có --- nếu không có dữ liệu ngoài, nêu rõ đây là giới hạn và hướng công việc tương lai. \textbf{[Thực hiện và báo cáo nếu phạm vi đồ án cho phép.]}
+
+\subsection{Tái lập thực nghiệm (reproducibility)}
+\label{subsec:repro}
+
+Để người đọc có thể lặp lại kết quả, bài báo khuyến nghị ghi rõ tối thiểu các mục sau (và áp dụng nhất quán trong mã nguồn):
+
+\begin{itemize}
+  \item \textbf{Hạt giống ngẫu nhiên:} ví dụ \texttt{random\_state=42} cho mọi thao tác có ngẫu nhiên (chia tập, bootstrap trong RF, khởi tạo SVM nếu có).
+  \item \textbf{Chia dữ liệu:} hold-out (ví dụ 80/20) với \emph{stratify} theo nhãn; hoặc xác thực chéo $k$-fold có stratify (thường $k=10$ hoặc $k=5$ tùy kích thước mẫu).
+  \item \textbf{Số lần chạy độc lập:} lặp lại toàn bộ pipeline với các seed khác nhau (ví dụ 5--10 lần) và báo cáo trung bình $\pm$ độ lệch chuẩn cho từng chỉ số.
+  \item \textbf{Khoảng tin cậy (tùy chọn):} với $k$ điểm chỉ số từ $k$-fold (hoặc $N$ lần lặp seed), có thể báo thêm khoảng tin cậy 95\% cho trung bình (ví dụ $t$-interval với $k-1$ bậc tự do) hoặc CI bootstrap cho AUC/Accuracy; ghi rõ phương pháp để tránh nhầm lẫn với CI của DeLong cho AUC khi cần so sánh hai mô hình.
+  \item \textbf{Phiên bản phần mềm:} phiên bản Python, scikit-learn, NumPy; hệ điều hành hoặc môi trường (máy cục bộ, Colab, container).
+\end{itemize}
+
+Khi hai mô hình chênh lệch nhỏ, nên báo cáo \textbf{kiểm định ý nghĩa thống kê (tùy chọn)} trên cùng các fold hoặc cùng tập kiểm thử: ví dụ \textbf{McNemar} cho hai ma trận lỗi phân loại cặp đôi, \textbf{kiểm định Wilcoxon signed-rank} hoặc \textbf{paired $t$-test} trên chỉ số theo từng fold (lưu ý giả định phân phối khi dùng $t$-test). Kết luận ``cải thiện có ý nghĩa'' chỉ nên đưa ra khi có kiểm định hoặc CI không giao nhau rõ ràng.
+
+\noindent\textbf{Tóm lược thiết kế phương pháp.} Thiết kế trên nhằm \emph{so sánh công bằng} giữa các thuật toán, \emph{tránh rò rỉ dữ liệu} trong tiền xử lý và khi chọn siêu tham số, và \emph{ước lượng hiệu năng tổng quát hóa} đáng tin cậy hơn nhờ tách bạch lựa chọn mô hình với đánh giá cuối (Mục~\ref{subsec:selection}) cùng các nguyên tắc tái lập (Mục~\ref{subsec:repro}).
+
+\section{Thực nghiệm và kết quả}
+\label{sec:results}
+
+\subsection{Giao thức thực nghiệm (experimental protocol)}
+\label{subsec:protocol}
+
+Khối này tóm tắt một cách có thể kiểm chứng toàn bộ Mục~\ref{sec:results}; cần khớp với notebook/mã nguồn.
+
+\begin{itemize}
+  \item \textbf{Tách dữ liệu:} tỷ lệ train/validation/test (nếu có) hoặc chỉ train/test + nested CV / inner CV như Mục~\ref{subsec:selection}; có \emph{stratify} theo nhãn hay không.
+  \item \textbf{Vòng trong (nếu có tuning):} số fold, lưới siêu tham số hoặc phương pháp tìm kiếm; tiêu chí chọn (ví dụ F1 trên validation).
+  \item \textbf{Vòng ngoài / báo cáo:} chỉ số được tính trên tập nào (test hold-out, hoặc trung bình CV ngoài); số seed độc lập và cách gộp mean $\pm$ std.
+  \item \textbf{Baseline:} so sánh mọi mô hình với hồi quy logistic (và tùy chọn majority baseline) trên cùng pipeline.
+  \item \textbf{Môi trường:} phiên bản Python, scikit-learn, NumPy; hệ điều hành hoặc container --- đồng nhất Phụ lục~\ref{app:seeds} và \ref{app:code}.
+\end{itemize}
+
+\noindent\textbf{[Điền chi tiết sau khi chốt thí nghiệm: máy cục bộ / Colab / máy chủ; CPU/GPU nếu có.]}
+
+\subsection{Bảng và hình}
+
+Chèn \textbf{bảng so sánh điểm đơn} (một lần chạy đại diện hoặc fold trung bình) và \textbf{bảng độ ổn định} (trung bình $\pm$ độ lệch chuẩn trên nhiều seed hoặc nhiều fold). Kèm \textbf{đồ thị ROC} và/hoặc \textbf{ma trận nhầm lẫn} cho mô hình tốt nhất hoặc mô hình cần thảo luận lỗi.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Kết quả điển hình một lần chạy (điền số sau thực nghiệm; chỉ mang tính minh họa).}
+  \label{tab:results-point}
+  \begin{tabular}{lccccc}
+    \toprule
+    Mô hình & Accuracy & Precision & Recall & F1 & ROC--AUC \\
+    \midrule
+    Logistic Regression & -- & -- & -- & -- & -- \\
+    SVM                 & -- & -- & -- & -- & -- \\
+    Random Forest       & -- & -- & -- & -- & -- \\
+    KNN                 & -- & -- & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Độ ổn định thống kê: trung bình $\pm$ độ lệch chuẩn qua $N$ lần chạy độc lập (hoặc qua $k$-fold). Có thể thêm cột khoảng tin cậy 95\% (Mục~\ref{subsec:repro}). \textbf{[Điền $N$ hoặc $k$ và số liệu sau thực nghiệm.]}}
+  \label{tab:results-meanstd}
+  \begin{tabular}{l p{3.1cm} p{3.1cm} p{3.1cm}}
+    \toprule
+    Mô hình & Acc.\ (mean $\pm$ std) & F1 (mean $\pm$ std) & AUC (mean $\pm$ std) \\
+    \midrule
+    Logistic Regression & -- & -- & -- \\
+    SVM                 & -- & -- & -- \\
+    Random Forest       & -- & -- & -- \\
+    KNN                 & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent\textit{Mục này chỉ trình bày kết quả; phân tích sâu, kiểm định (nếu có) và ý nghĩa lâm sàng đặt ở Thảo luận.} \textbf{[Thêm hình ROC / ma trận nhầm lẫn trong \texttt{image/} bằng \texttt{\textbackslash includegraphics}; đánh số Hình 2, 3,\ldots\ theo thứ tự xuất hiện trong PDF (mỗi hình: \texttt{\textbackslash caption} + \texttt{\textbackslash label\{fig:\ldots\}} + tham chiếu \texttt{\textbackslash ref}).]}
+
+\subsection{Nghiên cứu loại bỏ (ablation study)}
+
+Để chứng minh các thành phần pipeline có tác dụng, có thể báo cáo bảng/kết quả ngắn: (i) không chuẩn hóa so với có chuẩn hóa; (ii) không bước lựa chọn đặc trưng so với có; (iii) thay đổi một siêu tham số then chốt (ví dụ \texttt{n\_neighbors} của KNN). \textbf{[Điền nếu thực hiện; có thể rút gọn thành một đoạn và một bảng phụ.]}
+
+\section{Thảo luận}
+\label{sec:discussion}
+
+\subsection{Diễn giải kết quả và trả lời RQ1--RQ2}
+
+Giải thích vì sao mô hình có thể hoạt động tốt hơn (giả định về tuyến tính của log-odds, biên quyết định của SVM, tổ hợp cây trong rừng ngẫu nhiên, hoặc giả định cục bộ của KNN). Đối với \textbf{RQ1}, nêu rõ mô hình dẫn đầu theo từng chỉ số nếu có đánh đổi (ví dụ Recall cao nhưng Precision thấp). Đối với \textbf{RQ2}, liên hệ thứ tự đặc trưng quan trọng với y học (đường huyết, BMI, tuổi, v.v.) và với các quan sát trong tài liệu có giải thích mô hình.\cite{kirbas2025shap,chang2022pima}
+
+\subsection{Phân tích lỗi (error analysis)}
+
+Xem xét \textbf{false positive} và \textbf{false negative} trên tập kiểm thử: ca nào dễ bị nhầm (ví dụ nhãn biên, giá trị đặc trưng thiếu đặc hiệu)? Mô hình có xu hướng dự đoán thiên về lớp đa số không? Thảo luận \textbf{thiên lệch dữ liệu} (Pima chủ yếu phụ nữ, cỡ mẫu hạn chế, bối cảnh địa lý và thời điểm thu thập khác với quần thể hiện tại).\cite{uci-pima} Đây là điểm phân biệt giữa bài chỉ ``demo'' và bài có tư duy nghiên cứu.
+
+\subsection{So sánh với công trình liên quan}
+
+Định vị kết quả của bạn so với các mức chỉ số đã thảo luận ở Bảng~\ref{tab:related-numbers}, nhấn mạnh rằng chênh lệch có thể đến từ tiền xử lý và giao thức đánh giá chứ không chỉ từ lựa chọn thuật toán.\cite{zhang2025pima,kirbas2025shap,smith1988}
+
+\subsection{Mối đe dọa tính giá trị (threats to validity)}
+
+Áp dụng khung phản biện quen dùng trong báo cáo học máy ứng dụng:
+
+\begin{itemize}
+  \item \textbf{Giá trị nội bộ (internal validity):} rủi ro overfitting khi siêu tham số được chọn nhìn vào cùng dữ liệu đánh giá; rò rỉ từ tiền xử lý fit trên toàn bộ tập; độ nhạy với seed và khởi tạo ngẫu nhiên (RF, SVM).
+  \item \textbf{Giá trị ngoại sinh (external validity):} khả năng khái quát hóa ra quần thể khác Pima (địa lý, thời gian, giới tính, tiêu chí chẩn đoán); kích thước mẫu nhỏ làm khoảng tin cậy rộng.
+  \item \textbf{Giá trị cấu trúc (construct validity):} nhãn nhị phân có phản ánh đúng ``nguy cơ / tiểu đường'' trong thực hành không; chỉ số chọn (Accuracy vs Recall vs AUC) có khớp mục tiêu sàng lọc đã nêu ở Mục~\ref{subsec:metrics} không.
+\end{itemize}
+
+\subsection{Đạo đức, tác động lâm sàng và hạn chế}
+
+Mô hình chỉ mang tính \textbf{hỗ trợ nghiên cứu/giáo dục}, không thay thế quyết định của nhà chuyên môn. Cần minh bạch về giới hạn khái quát hóa, nguy cơ \textbf{công bằng} và \textbf{thiên lệch} trên nhóm dân số khác Pima, cũng như các yêu cầu \textbf{bảo vệ dữ liệu cá nhân} và đồng ý sử dụng dữ liệu nếu triển khai thực tế.
+
+Các hạn chế chung: kích thước tập nhỏ, thiếu đa dạng, rủi ro overfitting khi tối ưu siêu tham số quá mức trên cùng một tập kiểm thử lặp lại.
+
+\section{Kết luận và hướng phát triển}
+
+Tóm tắt kết quả chính và mô hình tốt nhất (sau khi có số liệu). Ý nghĩa: hỗ trợ giáo dục và minh họa quy trình ML trong y tế. Hướng phát triển: thử mô hình học sâu trên tập lớn hơn; tích hợp nhiều nguồn dữ liệu; triển khai ứng dụng có giám sát lâm sàng.
+
+\appendix
+\section*{Phụ lục}
+\addcontentsline{toc}{section}{\numberline{}Phụ lục}
+
+\noindent\textit{Quy ước:} các tiểu mục dưới đây được đánh chữ cái A, B, C, D để tránh nhầm với số hiệu mục trong phần nội dung chính (ví dụ ``Phụ lục A'' chứ không dùng số thứ tự trùng với Mục 6 trong luận văn).
+
+\phantomsection
+\label{app:hyper}
+\subsection*{A. Siêu tham số}
+
+Bảng~\ref{tab:hyper} liệt kê các siêu tham số \textbf{cố định trong mã} (ví dụ sklearn). Điền đúng giá trị đã dùng khi chạy notebook; không để mâu thuẫn giữa Phụ lục và Mục~\ref{sec:methods}--\ref{sec:results}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Siêu tham số mô hình (bản mẫu --- cập nhật theo \texttt{resources/diabetes.ipynb}).}
+  \label{tab:hyper}
+  \begin{tabular}{lp{8.5cm}}
+    \toprule
+    Mô hình & Tham số chính (ví dụ) \\
+    \midrule
+    Logistic Regression & \texttt{max\_iter}, \texttt{C}, \texttt{solver}, \texttt{penalty}, \texttt{class\_weight} \\
+    SVM & \texttt{C}, \texttt{kernel}, \texttt{gamma} (nếu RBF), \texttt{class\_weight} \\
+    Random Forest & \texttt{n\_estimators}, \texttt{max\_depth}, \texttt{min\_samples\_leaf}, \texttt{class\_weight} \\
+    KNN & \texttt{n\_neighbors}, \texttt{weights}, \texttt{p}, \texttt{metric} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection*{B. Kết quả chi tiết}
+
+\textbf{[Bổ sung bảng phụ, log huấn luyện nếu cần.]}
+
+\phantomsection
+\label{app:code}
+\subsection*{C. Tính khả dụng của mã và dữ liệu (code availability)}
+
+Để đáp ứng kỳ vọng phản biện về tái lập, khuyến nghị công bố: (i) mã tiền xử lý + huấn luyện + đánh giá (ví dụ notebook trong \texttt{resources/diabetes.ipynb}); (ii) liên kết kho mã công khai nếu có (\textbf{[URL GitHub/GitLab sau khi đăng]}); (iii) mô tả ngắn cách tái tạo môi trường (file \texttt{requirements.txt} hoặc phiên bản thư viện đã ghi ở Mục~\ref{subsec:protocol}).
+
+\phantomsection
+\label{app:seeds}
+\subsection*{D. Danh sách hạt giống ngẫu nhiên}
+
+Ghi rõ mọi \texttt{random\_state} đã dùng (chia tập, CV, mô hình). Ví dụ bản mẫu: \texttt{42} cho split chính; \texttt{0,1,\ldots,4} cho năm lần lặp độc lập. \textbf{[Cập nhật đúng theo lần chạy thực tế.]}
+
+\newpage
+\printbibliography[title={Tài liệu tham khảo}]
+
+\end{document}

@@ -1,0 +1,17 @@
+% File ngôn ngữ tiếng Việt cho biblatex (TeX Live không có sẵn vietnamese.lbx).
+% Đặt trong thư mục project để biblatex load khi language=vietnamese.
+\ProvidesFile{vietnamese.lbx}[2025/02/22 vietnamese localization for biblatex]
+
+\InheritBibliographyExtras{english}
+\InheritBibliographyStrings{english}
+
+\DeclareBibliographyStrings{%
+  bytranslator = {{dịch bởi}{dịch bởi}},
+  byeditor     = {{biên tập bởi}{biên tập bởi}},
+  and          = {{và}{và}},
+  in           = {{trong}{trong}},
+  ibidem       = {{sđd\adddot}{sđd\adddot}},
+  opcit        = {{sđd\adddot}{sđd\adddot}},
+  editor       = {{biên tập}{biên tập}},
+  translator   = {{dịch giả}{dịch giả}},
+}
