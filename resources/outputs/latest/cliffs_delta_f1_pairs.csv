@@ -1,0 +1,7 @@
+model_a,model_b,cliffs_delta,interpretation
+Random Forest,Logistic Regression,0.52,lớn
+Random Forest,KNN,0.2,nhỏ
+Random Forest,SVM (RBF),0.52,lớn
+Logistic Regression,SVM (RBF),0.48,lớn
+Logistic Regression,KNN,-0.24,nhỏ
+SVM (RBF),KNN,-0.36,vừa

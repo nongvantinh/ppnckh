@@ -32,3 +32,14 @@
 Thumbs.db
 
 [Bb]ooks
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Dữ liệu tải về cục bộ (notebook có thể tải lại)
+resources/data/*.csv
+# Không commit API key
+resources/kaggle.json

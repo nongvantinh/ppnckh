@@ -8,6 +8,22 @@ Luận văn/báo cáo LaTeX (`main.tex`) theo cấu trúc IMRaD: **Tóm tắt + 
 
 - **TeX Live** (khuyến nghị đủ gói: `xelatex`, `biber`, `biblatex`)
 - **LaTeX Workshop** (VS Code/Cursor), tùy chọn
+- **Python + uv** (cho `resources/diabetes.ipynb`): [uv](https://docs.astral.sh/uv/) quản lý môi trường và gói
+
+### Notebook thực nghiệm (`uv`)
+
+```bash
+cd /path/to/ppnckh
+uv sync
+uv run jupyter lab resources/diabetes.ipynb
+# hoặc chạy headless:
+uv run jupyter execute resources/diabetes.ipynb
+```
+
+- Dữ liệu Pima tải về `resources/data/` lần đầu (file `.csv` bị `.gitignore`; có thể chạy lại notebook để tải).
+- SHAP (tùy chọn): `uv sync --extra shap`
+- Tạo lại file `.ipynb` từ script (khi sửa generator): `python3 scripts/generate_diabetes_notebook.py`
+- Sau **Run All**, notebook gọi `resources/export_run.py` → dữ liệu trong `resources/outputs/latest/` (CSV, `manifest.json`, thư mục `figures/`) và bản snapshot `resources/outputs/runs/<timestamp>/`.
 
 ## Biên dịch
 

@@ -1,0 +1,19 @@
+{
+  "exported_at_utc": "2026-03-21T09:24:47.949398+00:00",
+  "python": "3.13.12",
+  "model_pkl": "resources/diabetes_prediction_model.pkl",
+  "sklearn": "1.8.0",
+  "numpy": "2.4.3",
+  "RANDOM_STATE_CV": 42,
+  "SEED_MODEL": 42,
+  "SPLIT_SEEDS": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "TEST_SIZE": 0.2,
+  "N_INNER_SPLITS": 5,
+  "best_model_by_mean_f1": "Random Forest"
+}
