@@ -586,13 +586,14 @@ So với hệ số hồi quy của LR hay tầm quan trọng dựa trên độ k
 
 Khả năng \textbf{tái lập} vốn là tiêu chí cốt lõi trong học máy thực nghiệm, bởi lẽ đặc tính này cho phép cộng đồng nghiên cứu có thể \textbf{kiểm chứng độc lập} các kết quả và thực hiện đối chiếu công bằng dưới cùng một hệ thống điều kiện kiểm soát. Trong nghiên cứu này, tính tái lập được đảm bảo thông qua ba cấp độ trọng tâm bao gồm \textbf{môi trường phần mềm} (phiên bản thư viện), \textbf{kiểm soát tính ngẫu nhiên} (hạt giống và quy tắc xáo trộn dữ liệu), cùng việc \textbf{đặc tả giao thức thực nghiệm} từ phân đoạn dữ liệu, không gian siêu tham số cho đến tiêu chí đánh giá và phương pháp tổng hợp kết quả.
 
-Toàn bộ quy trình được triển khai dựa trên thư viện \textbf{scikit-learn} với cấu trúc \texttt{Pipeline} nhất quán cho cả giai đoạn tiền xử lý và huấn luyện, qua đó giúp triệt tiêu rủi ro sai lệch quy trình giữa các mô hình khác nhau.\cite{pedregosa2011} Các thông tin về phiên bản Python, NumPy và scikit-learn đều được ghi nhận chi tiết tại Mục~\ref{subsec:protocol} cũng như trong tệp \texttt{manifest.json} thuộc thư mục kết quả. Việc lưu trữ dữ liệu này nhằm hạn chế tối đa các sai số hệ thống có thể phát sinh từ sự khác biệt giữa các phiên bản thư viện trong quá trình thực thi.
+Toàn bộ quy trình được triển khai dựa trên thư viện \textbf{scikit-learn} với cấu trúc \texttt{Pipeline} nhất quán cho cả giai đoạn tiền xử lý và huấn luyện, qua đó giúp triệt tiêu rủi ro sai lệch quy trình giữa các mô hình khác nhau.\cite{pedregosa2011} Các thông tin về phiên bản Python, NumPy và scikit-learn đều được ghi nhận chi tiết tại Mục~\ref{subsec:protocol} cũng như trong các \textbf{báo cáo thông số kỹ thuật chi tiết tại Phụ lục C}. Việc trình bày dữ liệu này nhằm hạn chế tối đa các sai số hệ thống có thể phát sinh từ sự khác biệt giữa các phiên bản thư viện trong quá trình thực thi.
 
 \textbf{Kiểm soát tính ngẫu nhiên}: Các vòng lặp thực nghiệm bên trong sử dụng \texttt{StratifiedKFold(..., shuffle=True, random\_state=42)} và \texttt{GridSearchCV(..., random\_state=42)}. Đồng thời, các mô hình có thành phần ngẫu nhiên như Rừng ngẫu nhiên đều được thiết lập cố định giá trị \texttt{random\_state=42}. Quy trình \textbf{phân đoạn tập huấn luyện và tập kiểm thử} được lặp lại với năm giá trị hạt giống khác nhau bao gồm \texttt{random\_state} $\in\{0,1,2,3,4\}$ nhằm đánh giá chính xác độ ổn định của mô hình. Cần lưu ý rằng thuật toán \textbf{KNN} không sở hữu tham số ngẫu nhiên nội tại, do đó tính tái lập của thuật toán này phụ thuộc hoàn toàn vào cấu trúc dữ liệu cũng như các tham số khoảng cách đã được cố định trước đó (Phụ lục~\ref{app:seeds}).
 
 \textbf{Minh bạch thực nghiệm}: Các yếu tố như tỷ lệ dữ liệu \textit{hold-out}, phương pháp phân tầng (\textit{stratify}), không gian tìm kiếm siêu tham số (Phụ lục~\ref{app:hyper}), tiêu chí tối ưu \texttt{scoring='f1'} (Mục~\ref{subsec:metrics}), cùng quy cách báo cáo kết quả theo định dạng trung bình $\pm$ độ lệch chuẩn vốn là \textbf{những thành phần then chốt} giúp báo cáo này có thể được kiểm chứng một cách đầy đủ.
 
 \textbf{Mã nguồn và Tài nguyên}: Tập tin mã nguồn \texttt{resources/diabetes.ipynb} đóng vai trò là thành phần thực thi chính, trong khi thư mục \texttt{resources/outputs/} chịu trách nhiệm lưu trữ các bảng kết quả đồng bộ với nội dung trình bày tại Chương~\ref{sec:results}. Mã nguồn còn đi kèm các tệp quản lý môi trường bao gồm \texttt{pyproject.toml} và \texttt{uv.lock} cùng Phụ lục~\ref{app:code} nhằm hỗ trợ tối đa cho việc tái lập và kiểm chứng độc lập.
+\textbf{Tài liệu thực thi đính kèm} đóng vai trò là thành phần thực thi chính, trong khi \textbf{các bảng biểu tại Phụ lục B} chịu trách nhiệm trình bày các kết quả đồng bộ với nội dung báo cáo. Nghiên cứu còn đi kèm các \textbf{đặc tả môi trường thực thi chi tiết tại Phụ lục C và E} nhằm hỗ trợ tối đa cho việc kiểm chứng độc lập.
 
 \paragraph{Danh mục đặc tả báo cáo (\textit{Reporting Checklist}).}
 \begin{itemize}
@@ -1016,7 +1017,7 @@ Tóm lại, đóng góp chính của luận văn này là xây dựng được m
 \label{app:hyper}
 \section*{Phụ lục A. Không gian tìm kiếm siêu tham số (\textit{Hyperparameter Search Space})}
 
-Không gian tìm kiếm siêu tham số được trình bày tại Bảng~\ref{tab:hyper} hiện đã được thiết lập cố định trong tệp mã nguồn \texttt{resources/diabetes.ipynb} và được áp dụng một cách nhất quán thông qua quy trình \texttt{GridSearchCV}. Các giá trị trong lưới tham số này phản ánh những thực hành phổ biến đối với dữ liệu dạng bảng quy mô vừa, qua đó giúp cân bằng giữa \textbf{chi phí tính toán} và \textbf{độ bao phủ} các cấu hình mô hình khác biệt. Bên cạnh đó, một số tham số cụ thể, ví dụ như \texttt{kernel='rbf'} đối với mô hình SVM, đã được cố định nhằm duy trì phạm vi đối chiếu trong cùng một họ mô hình như mô tả tại Chương~\ref{sec:methods}. Lưới tham số này được giữ \textbf{nguyên trạng} cho toàn bộ các lượt thực thi, đồng thời mọi thay đổi phát sinh đều được đồng bộ hóa chặt chẽ giữa nội dung bảng này và các tệp kết quả lưu trữ (\textit{artifacts}).
+Không gian tìm kiếm siêu tham số được trình bày tại Bảng~\ref{tab:hyper} hiện đã được thiết lập cố định trong \textbf{tài liệu thực thi đính kèm} và được áp dụng một cách nhất quán thông qua quy trình \texttt{GridSearchCV}. Các giá trị trong lưới tham số này phản ánh những thực hành phổ biến đối với dữ liệu dạng bảng quy mô vừa, qua đó giúp cân bằng giữa \textbf{chi phí tính toán} và \textbf{độ bao phủ} các cấu hình mô hình khác biệt. Bên cạnh đó, một số tham số cụ thể, ví dụ như \texttt{kernel='rbf'} đối với mô hình SVM, đã được cố định nhằm duy trì phạm vi đối chiếu trong cùng một họ mô hình như mô tả tại Chương~\ref{sec:methods}. Lưới tham số này được giữ \textbf{nguyên trạng} cho toàn bộ các lượt thực thi, đồng thời mọi thay đổi phát sinh đều được đồng bộ hóa chặt chẽ giữa nội dung bảng này và các kết quả trình bày tại Phụ lục.
 
 \begin{table}[htbp]
   \centering
@@ -1040,7 +1041,7 @@ Không gian tìm kiếm siêu tham số được trình bày tại Bảng~\ref{t
 \label{app:per-split}
 \section*{Phụ lục B. Kết quả chi tiết theo từng phân đoạn (\textit{Per-split Outputs})}
 
-Sau mỗi lượt thực thi hoàn chỉnh, hệ thống sẽ tự động kết xuất tệp tin \texttt{results\_by\_split.csv} và lưu trữ tại thư mục \texttt{resources/outputs/latest/}, đồng thời tạo một bản sao lưu định danh theo thời gian thực tại \texttt{resources/outputs/runs/<timestamp>/}. Tệp tin này ghi nhận đầy đủ các chỉ số bao gồm \texttt{accuracy}, \texttt{precision}, \texttt{recall}, \texttt{f1} và \texttt{roc\_auc} tương ứng với từng giá trị hạt giống ngẫu nhiên (\texttt{split\_seed}). Việc công bố dữ liệu chi tiết \textbf{theo từng hạt giống} nhằm minh bạch hóa \textbf{biên độ biến thiên} của mô hình, điều này không chỉ giúp người đọc theo dõi sự ổn định của thuật toán mà còn cung cấp dữ liệu nền tảng cho bảng thống kê tổng hợp tại Chương~\ref{sec:results} (Bảng~\ref{tab:results-meanstd}). Bảng~\ref{tab:appendix-f1-by-split} dưới đây trích dẫn riêng chỉ số $F_1$-score để phục vụ mục đích tra cứu nhanh, trong khi các thông số chi tiết khác có thể được truy xuất trực tiếp từ tệp mã nguồn tương ứng.
+Sau mỗi lượt thực thi hoàn chỉnh, các kết quả chi tiết được \textbf{tổng hợp và trình bày trực tiếp tại Phụ lục B} dưới dạng bảng biểu, bao gồm các chỉ số như \texttt{accuracy}, \texttt{precision}, \texttt{recall}, \texttt{f1} và \texttt{roc\_auc} tương ứng với từng giá trị hạt giống ngẫu nhiên. Việc công bố dữ liệu chi tiết \textbf{theo từng hạt giống} nhằm minh bạch hóa \textbf{biên độ biến thiên} của mô hình, điều này không chỉ giúp người đọc theo dõi sự ổn định của thuật toán mà còn cung cấp dữ liệu nền tảng cho bảng thống kê tổng hợp tại Chương~\ref{sec:results} (Bảng~\ref{tab:results-meanstd}). Bảng~\ref{tab:appendix-f1-by-split} dưới đây trích dẫn riêng chỉ số $F_1$-score để phục vụ mục đích tra cứu nhanh, trong khi các thông số chi tiết khác có thể được truy xuất trực tiếp từ các bảng biểu trong Phụ lục này.
 
 \begin{table}[htbp]
   \centering
@@ -1062,12 +1063,13 @@ Sau mỗi lượt thực thi hoàn chỉnh, hệ thống sẽ tự động kết
 \end{table}
 
 \noindent Hệ thống các tệp tin bổ trợ đi kèm trong thư mục kết quả bao gồm: \texttt{summary\_mean\_std.csv} phục vụ thống kê mô tả, \texttt{f1\_ci95\_by\_model.csv} cung cấp khoảng tin cậy $95\%$, cùng các tệp \texttt{brier\_by\_split.csv} và \texttt{brier\_mean\_std.csv} dùng để định lượng chỉ số hiệu chuẩn. Bên cạnh đó, các tệp \texttt{pr\_auc\_by\_split.csv} và \texttt{pr\_auc\_mean\_std.csv} ghi nhận diện tích dưới đường cong PR, trong khi \texttt{roc\_auc\_bootstrap\_ci\_seed0.csv} lưu trữ ước lượng bootstrap cho AUC và \texttt{cliffs\_delta\_f1\_pairs.csv} mô tả độ lớn hiệu ứng. Danh mục này còn bao gồm các kết quả về tầm quan trọng đặc trưng như \texttt{permutation\_importance\_by\_split.csv} và \texttt{permutation\_importance\_consensus.csv}, tệp kiểm định thống kê \texttt{wilcoxon\_f1.txt}, thư mục đồ thị \texttt{figures/} cùng tệp cấu trúc định danh \texttt{manifest.json}.
+\noindent Hệ thống các bảng số liệu thực nghiệm, chỉ số hiệu chuẩn và tệp kiểm định chi tiết được lưu trữ và trình bày đầy đủ tại các bảng biểu thuộc Phụ lục này.
 
 \phantomsection
 \label{app:environment}
 \section*{Phụ lục C. Môi trường thực nghiệm (\textit{Experimental Environment})}
 
-Các kết quả định lượng trong nghiên cứu được thực hiện trên cấu hình hệ thống bao gồm \textbf{Python} 3.13.12, \textbf{scikit-learn} 1.8.0 và \textbf{NumPy} 2.4.3, trong đó các thông số chi tiết đã được đặc tả tại tệp \texttt{resources/outputs/latest/manifest.json}. Toàn bộ các thư viện phụ thuộc phục vụ luồng xử lý chính như \textbf{pandas}, \textbf{SciPy} và \textbf{matplotlib} đều được khai báo trong tệp \texttt{pyproject.toml} và khóa phiên bản chặt chẽ thông qua \texttt{uv.lock}. Thực nghiệm được triển khai trên hệ điều hành \textbf{Linux} với kiến trúc CPU đa nhân, đồng thời nghiên cứu \textbf{không} sử dụng tăng tốc phần cứng GPU trong quy trình thực thi chính thức. Song song với đó, việc quản trị môi trường và cài đặt phần mềm được thực hiện đồng nhất thông qua công cụ \texttt{uv} tại thư mục gốc của kho mã nguồn.
+Các kết quả định lượng trong nghiên cứu được thực hiện trên cấu hình hệ thống bao gồm \textbf{Python} 3.13.12, \textbf{scikit-learn} 1.8.0 và \textbf{NumPy} 2.4.3, trong đó các thông số chi tiết đã được đặc tả tại \textbf{Phụ lục C}. Toàn bộ các thư viện phụ thuộc phục vụ luồng xử lý chính như \textbf{pandas}, \textbf{SciPy} và \textbf{matplotlib} đều được liệt kê trong phần đặc tả môi trường thực thi tại Phụ lục này. Thực nghiệm được triển khai trên hệ điều hành \textbf{Linux} với kiến trúc CPU đa nhân, đồng thời nghiên cứu \textbf{không} sử dụng tăng tốc phần cứng GPU trong quy trình thực thi chính thức.
 
 \phantomsection
 \label{app:pipeline}
@@ -1088,7 +1090,8 @@ Bên cạnh đó, các tập lệnh bổ trợ phục vụ cho quá trình hậu
 \label{app:seeds}
 \section*{Phụ lục E. Tính tái lập và khả năng truy cập mã nguồn (\textit{Reproducibility \& Code Availability})}
 
-Nhằm mục đích tái lập toàn bộ kết quả thực nghiệm của luận văn, các thành phần cốt lõi hiện đã được chuẩn hóa và cung cấp một cách đầy đủ, bao gồm: (i) Notebook thực thi chính tại tệp \texttt{resources/diabetes.ipynb} cùng tập lệnh kết xuất dữ liệu \texttt{resources/export\_run.py}; (ii) Công cụ quản trị \texttt{uv} đi kèm các tệp tin cấu hình môi trường \texttt{pyproject.toml} và \texttt{uv.lock}; (iii) Kho lưu trữ mã nguồn công khai được đính kèm cùng bản báo cáo chính thức.
+
+Nhằm mục đích tái lập toàn bộ kết quả thực nghiệm của luận văn, các thành phần cốt lõi hiện đã được chuẩn hóa và trình bày chi tiết tại các Phụ lục, bao gồm: (i) \textbf{Tài liệu thực thi đính kèm} mô tả quy trình phân tích và xử lý dữ liệu; (ii) Đặc tả môi trường thực thi và các thông số kỹ thuật tại Phụ lục C và E; (iii) Các bảng biểu kết quả, thông số và kiểm định được tổng hợp tại Phụ lục B.
 
 \textbf{Cấu hình hạt giống ngẫu nhiên (\textit{Seeds}):} 
 Thiết lập \texttt{random\_state=42} được áp dụng thống nhất cho các tiến trình nội bộ như \texttt{StratifiedKFold}, \texttt{GridSearchCV} cùng các thuật toán LR, SVM và RF nhằm đảm bảo tính ổn định tối đa cho mô hình. Song song với đó, các giá trị hạt giống lần lượt thuộc tập $\{0, 1, 2, 3, 4\}$ sẽ được áp dụng cho hàm \texttt{train\_test\_split} để tạo ra năm lượt phân đoạn dữ liệu hoàn toàn độc lập. Đối với thuật toán \textbf{KNN}, do bản chất của phương pháp này không chứa các tham số ngẫu nhiên nội tại, vì vậy kết quả thu được sẽ được cố định dựa trên cấu trúc dữ liệu cùng hệ thống chỉ số đã thiết lập như đã mô tả chi tiết tại Mục~\ref{subsec:repro}.
@@ -1356,6 +1359,7 @@ Kết quả nên được trình bày trong báo cáo dưới dạng:
 
 Theo yêu cầu của tiểu luận môn học PPNCKH, phần này trình bày đầy đủ thông tin về việc sử dụng các công cụ trí tuệ nhân tạo trong quá trình thực hiện đề tài, nhằm đảm bảo tính minh bạch và tuân thủ các quy chuẩn học thuật.
 
+
 \begin{table}[htbp]
   \centering
   \small
@@ -1378,6 +1382,10 @@ Theo yêu cầu của tiểu luận môn học PPNCKH, phần này trình bày �
     \bottomrule
   \end{tabular}
 \end{table}
+
+\subsubsection*{Bổ sung về cấu trúc dự án và trình bày kết quả}
+
+\textit{Công cụ AI (NotebookLM) đã hỗ trợ gợi ý một cấu trúc quản lý dự án học máy tiêu chuẩn (bao gồm các thư mục kỹ thuật như \texttt{resources}, \texttt{outputs}...). Tuy nhiên, để phù hợp với quy cách tiểu luận và thuận tiện cho việc chấm bài của giảng viên, \textbf{người viết đã chuyển đổi và trình bày toàn bộ các kết quả, thông số này trực tiếp vào phần Phụ lục của báo cáo thay vì nộp các tệp tin cấu hình riêng lẻ}. Điều này giúp đảm bảo tính minh bạch, kiểm soát nội dung và phù hợp với yêu cầu thực tế của môn học.}
 
 \subsubsection*{Tóm tắt mức độ hỗ trợ}
 
