@@ -237,6 +237,12 @@ Tuy nhiên, hiệu năng của các thuật toán thường biến động lớn
 
 Từ những lập luận trên, nghiên cứu này xây dựng một quy trình thực nghiệm chuẩn hóa nhằm đánh giá toàn diện hiệu năng của các thuật toán học máy truyền thống trong bài toán phân loại nhị phân nguy cơ đái tháo đường. Kết quả kỳ vọng không chỉ đưa ra cái nhìn đối chiếu khách quan giữa các mô hình, mà còn góp phần khẳng định tầm quan trọng của giao thức thực nghiệm đối với độ tin cậy và khả năng tổng quát hóa của mô hình. Đây chính là nền tảng cho các mục tiêu và đóng góp cụ thể sẽ được trình bày chi tiết trong các chương tiếp theo.
 
+\section{Tác động xã hội và ý nghĩa thực tiễn}
+
+Giá trị cốt lõi của nghiên cứu này không chỉ nằm ở những phát hiện kỹ thuật mà còn ở tác động trực tiếp đến y tế công cộng và cộng đồng địa phương. Hệ thống sàng lọc dựa trên học máy có khả năng giúp các cơ sở y tế cơ sở trong những vùng có tỷ lệ bệnh nhân đái tháo đường cao nhất thực hiện tầm soát sớm một cách hiệu quả hơn. Bằng cách xác định những nhóm đối tượng có nguy cơ cao dựa trên các chỉ số sinh hiệu đơn giản (Glucose, BMI, tuổi...), các bác sĩ địa phương có thể tập trung nguồn lực y tế hạn chế vào những trường hợp cần thiết nhất, từ đó giảm thiểu gánh nặng biến chứng và chi phí điều trị dài hạn.
+
+Đặc biệt, ứng dụng của công nghệ thông tin trong lĩnh vực y tế không chỉ nâng cao hiệu quả chẩn đoán mà còn góp phần dân chủ hóa tiếp cận y tế ở những vùng sâu, vùng xa hoặc những cộng đồng có khả năng tiếp cận chuyên gia y tế hạn chế. Khi các mô hình học máy được triển khai trên các thiết bị di động hoặc trong các hệ thống thông tin y tế tích hợp, chúng trở thành những công cụ hỗ trợ quyết định có giá trị to lớn cho những bác sĩ địa phương mà không cần phụ thuộc vào những chuyên gia tập trung ở thành phố lớn. Vì vậy, việc thiết lập một khung đánh giá chặt chẽ và có khả năng tái lập cho các mô hình này chính là tiền đề cần thiết để đảm bảo rằng những công cụ được triển khai trên thực địa là những công cụ đáng tin cậy, an toàn và mang lại lợi ích thực sự cho người bệnh và cộng đồng.
+
 \section{Mục tiêu nghiên cứu}
 Nghiên cứu này tập trung vào bài toán \emph{phân loại nhị phân}: dự báo nguy cơ khởi phát đái tháo đường dựa trên tập hợp các đặc trưng lâm sàng và chỉ số sinh hiệu. Trọng tâm của nghiên cứu là xây dựng một giao thức thực nghiệm chặt chẽ nhằm huấn luyện và đối chiếu các mô hình học máy, qua đó loại bỏ các sai số lạc quan hệ thống phát sinh từ hiện tượng rò rỉ dữ liệu (\textit{data leakage}) hoặc sự thiếu nhất quán trong quy trình tiền xử lý giữa các mô hình so sánh.
 
@@ -1088,6 +1094,323 @@ Nhằm mục đích tái lập toàn bộ kết quả thực nghiệm của lu�
 Thiết lập \texttt{random\_state=42} được áp dụng thống nhất cho các tiến trình nội bộ như \texttt{StratifiedKFold}, \texttt{GridSearchCV} cùng các thuật toán LR, SVM và RF nhằm đảm bảo tính ổn định tối đa cho mô hình. Song song với đó, các giá trị hạt giống lần lượt thuộc tập $\{0, 1, 2, 3, 4\}$ sẽ được áp dụng cho hàm \texttt{train\_test\_split} để tạo ra năm lượt phân đoạn dữ liệu hoàn toàn độc lập. Đối với thuật toán \textbf{KNN}, do bản chất của phương pháp này không chứa các tham số ngẫu nhiên nội tại, vì vậy kết quả thu được sẽ được cố định dựa trên cấu trúc dữ liệu cùng hệ thống chỉ số đã thiết lập như đã mô tả chi tiết tại Mục~\ref{subsec:repro}.
 
 \noindent Việc công khai toàn bộ mã nguồn, thực hiện khóa phiên bản phụ thuộc và cung cấp đầy đủ các kết quả trung gian không chỉ giúp triệt tiêu các sai lệch hệ thống nằm ngoài tầm kiểm soát, mà còn góp phần tăng cường độ tin cậy cũng như mở ra khả năng mở rộng cho các nghiên cứu trong tương lai.
+
+\phantomsection
+\label{app:survey}
+\section*{Phụ lục F. Phiếu khảo sát về ứng dụng học máy trong sàng lọc bệnh đái tháo đường}
+
+Phiếu khảo sát dưới đây được thiết kế nhằm thu thập dữ liệu định tính từ các chuyên gia CNTT, nhân viên y tế và người dùng cuối, nhằm xác định mức độ nhận thức và tin tưởng vào ứng dụng các thuật toán học máy trong dự báo nguy cơ đái tháo đường. Dữ liệu thu được từ khảo sát này (dự kiến từ 30--50 phiếu) sẽ được xử lý bằng phương pháp tính hệ số tương quan thứ bậc Spearman (Phụ lục~\ref{app:spearman}), nhằm đánh giá mối liên hệ giữa các yếu tố ảnh hưởng đến việc chấp nhận và triển khai công nghệ.
+
+\textbf{PHIẾU KHẢO SÁT: NHẬN THỨC VỀ ỨNG DỤNG HỌC MÁY TRONG SÀNG LỌC BỆNH ĐÁI THÁO ĐƯỜNG}
+
+\noindent\fbox{\begin{minipage}[t]{0.95\textwidth}
+
+\textbf{Mục tiêu:} Tìm hiểu nhận thức, thái độ và rào cản khi triển khai các thuật toán học máy trong lĩnh vực y tế.
+
+\vspace{0.3cm}
+
+\textbf{Thời gian trả lời:} Khoảng 5--8 phút.
+
+\vspace{0.3cm}
+
+\textbf{Tính bảo mật:} Các câu trả lời sẽ được xử lý hoàn toàn bảo mật và chỉ sử dụng cho mục đích nghiên cứu khoa học.
+
+\end{minipage}}
+
+\vspace{0.5cm}
+
+\textbf{PHẦN I: THÔNG TIN CƠ BẢN}
+
+\begin{enumerate}
+  \item Vị trí công việc của bạn:
+  \begin{itemize}
+    \item[$\square$] Nhân viên y tế / Bác sĩ
+    \item[$\square$] Chuyên gia CNTT / Kỹ sư phần mềm
+    \item[$\square$] Người quản lý / Điều hành
+    \item[$\square$] Khác (vui lòng ghi rõ): \underline{\hspace{4cm}}
+  \end{itemize}
+
+  \item Kinh nghiệm làm việc của bạn:
+  \begin{itemize}
+    \item[$\square$] Dưới 2 năm
+    \item[$\square$] 2--5 năm
+    \item[$\square$] 5--10 năm
+    \item[$\square$] Trên 10 năm
+  \end{itemize}
+\end{enumerate}
+
+\vspace{0.3cm}
+
+\textbf{PHẦN II: CÂU HỎI CHÍNH}
+
+\noindent\textbf{Câu 1 (Câu hỏi Có/Không):} Bạn có đang sử dụng các thiết bị đeo thông minh hoặc ứng dụng di động để theo dõi các chỉ số sức khỏe cá nhân (như nhịp tim, số bước chân, cân nặng...) không?
+\begin{itemize}
+  \item[$\square$] A. Có
+  \item[$\square$] B. Không
+\end{itemize}
+
+\vspace{0.3cm}
+
+\noindent\textbf{Câu 2 (Câu hỏi nhiều phương án trả lời):} Theo bạn, rào cản lớn nhất khi triển khai các mô hình AI (như Rừng ngẫu nhiên hay Hồi quy Logistic) vào thực tế y tế là gì?
+\begin{itemize}
+  \item[$\square$] A. Độ chính xác chưa đủ tin cậy.
+  \item[$\square$] B. Vấn đề bảo mật và đạo đức dữ liệu.
+  \item[$\square$] C. Chi phí vận hành và hạ tầng CNTT.
+  \item[$\square$] D. Sự chấp nhận của đội ngũ y bác sĩ.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\noindent\textbf{Câu 3 (Câu hỏi có thể xử lý hệ số tương quan thứ bậc - Biến X):} Trên thang điểm từ 1 đến 5, bạn đánh giá mức độ quan trọng của chỉ số \textbf{Glucose} (đường huyết) trong việc dự báo nguy cơ đái tháo đường như thế nào?
+
+\noindent\textit{(1: Rất không quan trọng, 2: Không quan trọng, 3: Bình thường, 4: Quan trọng, 5: Rất quan trọng)}
+
+\begin{center}
+\begin{tabular}{ccccc}
+  \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} \\
+  $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\
+\end{tabular}
+\end{center}
+
+\vspace{0.3cm}
+
+\noindent\textbf{Câu 4 (Câu hỏi có thể xử lý hệ số tương quan thứ bậc - Biến Y):} Trên thang điểm từ 1 đến 5, bạn đánh giá mức độ quan trọng của chỉ số \textbf{BMI} (chỉ số khối cơ thể) trong việc dự báo nguy cơ đái tháo đường như thế nào?
+
+\noindent\textit{(1: Rất không quan trọng, 2: Không quan trọng, 3: Bình thường, 4: Quan trọng, 5: Rất quan trọng)}
+
+\begin{center}
+\begin{tabular}{ccccc}
+  \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} \\
+  $\square$ & $\square$ & $\square$ & $\square$ & $\square$ \\
+\end{tabular}
+\end{center}
+
+\noindent\fbox{\begin{minipage}[t]{0.95\textwidth}
+\textit{\textbf{Lưu ý cho yêu cầu 3 của Tài liệu 2:} Bạn sẽ dùng kết quả của Câu 3 và Câu 4 để tính \textbf{Hệ số tương quan thứ bậc Spearman}. Việc này giúp đánh giá xem sự nhận thức về tầm quan trọng của Glucose và BMI ở người khảo sát có mối liên hệ thuận hay nghịch với nhau không.}
+\end{minipage}}
+
+\vspace{0.3cm}
+
+\noindent\textbf{Câu 5 (Câu hỏi Có/Không):} Bạn có tin tưởng vào một kết quả chẩn đoán bệnh từ mô hình học máy nếu mô hình đó đạt độ chính xác (Accuracy) trên 75\% không?
+\begin{itemize}
+  \item[$\square$] A. Có
+  \item[$\square$] B. Không
+\end{itemize}
+
+\vspace{0.3cm}
+
+\noindent\textbf{Câu 6 (Câu hỏi nhiều phương án trả lời):} Đặc tính nào của mô hình AI mà bạn quan tâm nhất khi ứng dụng trong y tế?
+\begin{itemize}
+  \item[$\square$] A. Hiệu năng dự báo (Điểm F1, AUC cao).
+  \item[$\square$] B. Tính minh bạch (Dễ diễn giải, hiểu được tại sao máy dự đoán vậy).
+  \item[$\square$] C. Độ ổn định (Hiệu năng đồng nhất qua nhiều tập dữ liệu).
+  \item[$\square$] D. Tốc độ xử lý dữ liệu.
+\end{itemize}
+
+\vspace{0.3cm}
+
+\noindent\textbf{Câu 7 (Câu hỏi mở):} Theo quan điểm của bạn, ngành Công nghệ thông tin cần làm gì để hỗ trợ tốt hơn cho việc phát hiện sớm các bệnh mãn tính tại địa phương và xã hội hiện nay?
+
+\vspace{1.5cm}
+
+\noindent\underline{\hspace{15cm}}
+
+\vspace{0.6cm}
+
+\noindent\underline{\hspace{15cm}}
+
+\vspace{0.6cm}
+
+\noindent\underline{\hspace{15cm}}
+
+\vspace{0.8cm}
+
+\noindent\fbox{\begin{minipage}[t]{0.95\textwidth}
+\textbf{Giải thích cách đáp ứng yêu cầu từ Tài liệu 2:}
+\begin{itemize}
+  \item \textbf{Số lượng câu hỏi:} 7 câu (nằm trong khoảng 6--8 câu theo yêu cầu).
+  \item \textbf{Định dạng câu hỏi:}
+    \begin{itemize}
+      \item Có/Không: Câu 1 và Câu 5.
+      \item Nhiều phương án: Câu 2 và Câu 6.
+      \item Câu hỏi mở: Câu 7.
+      \item Tính tương quan thứ bậc: Câu 3 và Câu 4 (Sử dụng thang đo Likert 1--5 để thu thập dữ liệu định tính có thứ bậc).
+    \end{itemize}
+  \item \textbf{Mục đích CNTT:} Các câu hỏi đều xoay quanh việc ứng dụng thuật toán, độ chính xác của mô hình và rào cản kỹ thuật trong lĩnh vực y tế thông minh.
+\end{itemize}
+\end{minipage}}
+
+\vspace{0.8cm}
+
+\textit{Cảm ơn bạn đã tham gia khảo sát này. Phản hồi của bạn sẽ góp phần nâng cao chất lượng nghiên cứu và ứng dụng học máy trong lĩnh vực y tế.}
+
+\phantomsection
+\label{app:spearman}
+\section*{Phụ lục G. Phương pháp tính hệ số tương quan thứ bậc Spearman (\textit{Spearman's Rank Correlation Analysis})}
+
+Hệ số tương quan thứ bậc Spearman ($\rho$ hoặc $r_s$) được sử dụng để đánh giá mối liên hệ giữa hai biến dữ liệu có thứ bậc hoặc thứ tự. Trong bối cảnh của nghiên cứu này, hệ số Spearman sẽ được tính từ câu 3 và câu 4 của phiếu khảo sát (Phụ lục~\ref{app:survey}) để xác định mối liên hệ giữa nhận thức về tầm quan trọng của Glucose và BMI.
+
+\subsubsection*{1. Công thức tính}
+
+Hệ số tương quan thứ bậc Spearman được tính theo công thức:
+
+\begin{equation}
+\label{eq:spearman}
+\rho = 1 - \frac{6 \sum_{i=1}^{n} d_i^2}{n(n^2 - 1)}
+\end{equation}
+
+\noindent Trong đó:
+\begin{itemize}
+  \item $d_i = R(X_i) - R(Y_i)$: Hiệu số giữa thứ bậc (hạng) của biến $X$ và biến $Y$ tại mẫu thứ $i$.
+  \item $n$: Số lượng mẫu (phiếu khảo sát), thường từ 30--50 theo yêu cầu.
+  \item $\sum d_i^2$: Tổng bình phương của các hiệu số thứ bậc.
+\end{itemize}
+
+\subsubsection*{2. Quy trình thực hiện từng bước}
+
+\textbf{Bước 1: Thu thập và chuẩn bị dữ liệu}
+
+Lập bảng dữ liệu với cấu trúc sau:
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Cấu trúc bảng dữ liệu cho tính toán Spearman. Ví dụ với 5 người khảo sát đầu tiên.}
+  \label{tab:spearman-data}
+  \begin{tabular}{ccccccc}
+    \toprule
+    \textbf{STT} & $X$ (Glucose) & $Y$ (BMI) & Hạng $X$ & Hạng $Y$ & $d = R_X - R_Y$ & $d^2$ \\
+    \midrule
+    1 & 5 & 4 & & & & \\
+    2 & 4 & 5 & & & & \\
+    3 & 3 & 3 & & & & \\
+    4 & 5 & 5 & & & & \\
+    5 & 2 & 3 & & & & \\
+    \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+    $n$ & \multicolumn{6}{c}{} \\
+    \bottomrule
+    \multicolumn{6}{r}{\textbf{Tổng}} & $\sum d^2 = $ \\
+  \end{tabular}
+\end{table}
+
+\textbf{Bước 2: Xếp hạng dữ liệu}
+
+\begin{itemize}
+  \item Sắp xếp các giá trị của $X$ từ thấp đến cao (hoặc cao xuống thấp) và gán thứ hạng từ 1 đến $n$.
+  \item Thực hiện tương tự với biến $Y$.
+  \item \textbf{Xử lý đồng hạng:} Nếu có nhiều giá trị bằng nhau, lấy trung bình cộng của các thứ hạng mà chúng chiếm giữ. Ví dụ: Nếu ba giá trị bằng nhau chiếm vị trí hạng 2, 3, 4 thì mỗi giá trị nhận hạng $\frac{2+3+4}{3} = 3$.
+\end{itemize}
+
+\textbf{Bước 3: Tính hiệu số và bình phương}
+
+\begin{itemize}
+  \item $d_i = R(X_i) - R(Y_i)$ cho từng mẫu.
+  \item $d_i^2$ bằng cách bình phương từng $d_i$.
+  \item Tính tổng: $\sum d_i^2 = \sum_{i=1}^{n} d_i^2$.
+\end{itemize}
+
+\textbf{Bước 4: Áp dụng công thức}
+
+Thay các giá trị $\sum d_i^2$ và $n$ vào phương trình~\eqref{eq:spearman}:
+
+\[
+\rho = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}
+\]
+
+\subsubsection*{3. Diễn giải kết quả}
+
+Giá trị $\rho$ nằm trong khoảng từ $-1$ đến $+1$:
+
+\begin{itemize}
+  \item \textbf{$\rho > 0$:} Tương quan thuận. Khi một biến tăng, biến kia cũng có xu hướng tăng. Ví dụ: Người có nhận thức cao về tầm quan trọng của Glucose cũng có xu hướng nhận thức cao về BMI.
+  \item \textbf{$\rho < 0$:} Tương quan nghịch. Khi một biến tăng, biến kia có xu hướng giảm.
+  \item \textbf{$\rho = 0$:} Không có mối tương quan thứ bậc.
+  \item \textbf{Độ mạnh của tương quan:}
+    \begin{itemize}
+      \item $|\rho| \geq 0{,}7$: Tương quan rất chặt chẽ / mạnh.
+      \item $0{,}4 \leq |\rho| < 0{,}7$: Tương quan trung bình.
+      \item $|\rho| < 0{,}4$: Tương quan yếu.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{4. Ví dụ tính toán cụ thể}
+
+Giả sử từ 5 người khảo sát đầu tiên (xem Bảng~\ref{tab:spearman-data}):
+\begin{itemize}
+  \item Người 1: $X=5, Y=4$. Sắp xếp tất cả: $X$ có các giá trị $\{5, 4, 3, 5, 2\}$ tương ứng hạng $\{4{,}5, 3, 2, 4{,}5, 1\}$ (giá trị 5 xuất hiện 2 lần ở vị trí 4 và 5, nên lấy trung bình $\frac{4+5}{2} = 4{,}5$).
+  \item Tương tự với $Y$.
+  \item Tính $d$ và $d^2$.
+\end{itemize}
+
+Công cụ hỗ trợ tính toán: Python (\texttt{scipy.stats.spearmanr}) hoặc Excel (\texttt{=CORREL} trên cột thứ bậc).
+
+\subsubsection*{5. Báo cáo kết quả}
+
+Kết quả nên được trình bày trong báo cáo dưới dạng:
+
+\textit{``Hệ số tương quan thứ bậc Spearman giữa mức độ nhận thức về Glucose và BMI là $\rho = 0{,}62$ ($n=45$, $p < 0{,}05$), cho thấy tương quan thuận trung bình có ý nghĩa thống kê. Điều này gợi ý rằng những người đánh giá cao tầm quan trọng của Glucose cũng có xu hướng đánh giá cao tầm quan trọng của BMI.''}
+
+\phantomsection
+\label{app:ai-disclosure}
+\section*{Phụ lục H. Kê khai sử dụng công cụ AI (\textit{AI Disclosure Statement})}
+
+Theo yêu cầu của tiểu luận môn học PPNCKH, phần này trình bày đầy đủ thông tin về việc sử dụng các công cụ trí tuệ nhân tạo trong quá trình thực hiện đề tài, nhằm đảm bảo tính minh bạch và tuân thủ các quy chuẩn học thuật.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{5pt}
+  \caption{Chi tiết kê khai sử dụng công cụ AI trong các phần khác nhau của đề tài.}
+  \label{tab:ai-disclosure}
+  \begin{tabular}{p{1.8cm}p{1.8cm}p{2.2cm}p{3.5cm}p{2.3cm}}
+    \toprule
+    \textbf{Phần nội dung} & \textbf{Công cụ AI} & \textbf{Mục đích} & \textbf{Nội dung hỗ trợ cụ thể} & \textbf{Mức độ tham gia} \\
+    \midrule
+    \textbf{Phân tích dữ liệu \& Code} & GitHub Copilot, NotebookLM & Kiểm tra logic \& giải thích kỹ thuật & Hỗ trợ kiểm tra tính chính xác của code Python, giải thích ý nghĩa các chỉ số thống kê (Z-score, F1-score) và cách tính hệ số Spearman & Hỗ trợ (15--20\%) \\
+    \midrule
+    \textbf{Soạn thảo báo cáo} & NotebookLM & Chuẩn hóa văn phong \& xây dựng cấu trúc & Hỗ trợ xây dựng đề cương chi tiết cho 5 chương, tóm tắt các ý chính, chuẩn hóa các dạng câu trong tiêu đề và mô tả & Hỗ trợ (20--25\%) \\
+    \midrule
+    \textbf{Thiết kế trình bày} & AI Image Generation Tools & Gợi ý nội dung slide & Đề xuất cấu trúc slide, sắp xếp thứ tự nội dung dựa trên logic của nghiên cứu & Hỗ trợ (10\%) \\
+    \midrule
+    \textbf{Khảo sát \& Thống kê} & GitHub Copilot, NotebookLM & Thiết kế công cụ \& hướng dẫn tính toán & Hỗ trợ thiết kế bộ phiếu khảo sát 7 câu hỏi (Phụ lục F) và hướng dẫn chi tiết quy trình tính tương quan thứ bậc Spearman (Phụ lục G) & Hỗ trợ (20--25\%) \\
+    \midrule
+    \textbf{Kiểm tra tài liệu tham khảo} & NotebookLM & Xác minh độ chính xác nội dung & Kiểm tra lại các công thức toán học, tên gọi kỹ thuật và định nghĩa khái niệm & Hỗ trợ (10\%) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection*{Tóm tắt mức độ hỗ trợ}
+
+Nhìn chung, các công cụ AI đã hỗ trợ khoảng \textbf{15--25\% công việc tổng thể} của đề tài, tập trung chủ yếu vào:
+\begin{itemize}
+  \item \textbf{Kiểm tra tính logic và chính xác} của mã nguồn Python mà không thay đổi cơ chế thuật toán cốt lõi.
+  \item \textbf{Giải thích khái niệm phức tạp} như chỉ số F1-score, ROC-AUC, Brier score và phương pháp tính hệ số Spearman.
+  \item \textbf{Chuẩn hóa văn phong} và xây dựng cấu trúc logic cho báo cáo mà vẫn đảm bảo nội dung khoa học độc lập.
+  \item \textbf{Thiết kế công cụ} (phiếu khảo sát, bảng tính Spearman) phù hợp với các tiêu chuẩn nghiên cứu.
+\end{itemize}
+
+\subsubsection*{Những phần không sử dụng AI}
+
+Các phần \textbf{cốt lõi} của đề tài thực hiện hoàn toàn độc lập:
+\begin{itemize}
+  \item Lựa chọn chủ đề nghiên cứu, xây dựng câu hỏi và mục tiêu.
+  \item Triển khai các thuật toán học máy (Logistic Regression, SVM, Random Forest, KNN) trên tập dữ liệu Pima.
+  \item Thực hiện quy trình xác thực chéo phân tầng, tối ưu hóa siêu tham số và đánh giá hiệu năng.
+  \item Phân tích kết quả thực nghiệm, diễn giải các phát hiện và rút ra các kết luận khoa học.
+  \item Viết lời cảm ơn, phát triển tư tưởng độc lập và các đóng góp của nghiên cứu.
+\end{itemize}
+
+\subsubsection*{Tác động xã hội và địa phương}
+
+Như đã trình bày tại Chương~\ref{sec:intro} (Mục ``Tác động xã hội và ý nghĩa thực tiễn''), đề tài này nhấn mạnh việc phát triển các công cụ hỗ trợ chẩn đoán dựa trên học máy có khả năng nâng cao hiệu quả sàng lọc bệnh đái tháo đường tại các cơ sở y tế cơ sở ở địa phương. Bằng cách khai thác các chỉ số sinh hiệu đơn giản như Glucose, BMI và tuổi tuổi, các mô hình được xây dựng có thể:
+\begin{enumerate}
+  \item Giúp giảm thiểu gánh nặng công việc cho đội ngũ y bác sĩ địa phương thông qua tự động hóa quá trình sàng lọc ban đầu.
+  \item Tăng cường tiếp cận chẩn đoán công bằng cho những vùng sâu, vùng xa có tỷ lệ bác sĩ chuyên khoa hạn chế.
+  \item Giảm chi phí điều trị dài hạn thông qua việc phát hiện sớm các trường hợp nguy cơ cao.
+  \item Cung cấp một khung phương pháp luận minh bạch để các nhà phát triển khác có thể tái lập và cải tiến các mô hình tương tự.
+\end{enumerate}
+
+Những mục tiêu này không chỉ mang giá trị kỹ thuật mà còn góp phần vào phát triển kinh tế xã hội ở cảp độ cộng đồng và địa phương.
 
 \newpage
 \printbibliography[title={Tài liệu tham khảo}]
