@@ -56,3 +56,8 @@ xelatex main.tex
 
 - Điền số liệu thực nghiệm vào bảng trong mục 4 và cập nhật Tóm tắt (~150–250 từ, không trích dẫn).
 - Trích dẫn mẫu cho tổng quan/dữ liệu: `smith1988`, `uci-pima`, `pedregosa2011` trong `references.bib`.
+
+Prompt cho Google genmini giúp sửa tiếng việt cho trôi chảy. Lưu ý, chỉ nên copy 2 đoạn ngắn vào LLM để nó sửa xúc tích nhất. nội dung càng dài LLM càng sơ lược bớt đầu ra.
+```bash
+Giúp mình sửa đoạn sau, mình muốn nó nghe tự nhiên, trôi chảy hơn khi đọc, câu văn phải chắc chắn và chuyên nghiệp, phù hợp trong bối cảnh nghiên cứu. Đảm bảo giống như là 1 người việt viết, không sử dụng dấu gạch ngang (—) để nối câu, hãy thay bằng các từ nối hoặc cấu trúc câu thuần Việt, bạn phải đưa cho mình đầu ra với cú pháp latex và để code LaTeX trong khối mã:
+```
